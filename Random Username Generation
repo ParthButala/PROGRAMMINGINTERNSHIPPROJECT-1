@@ -1,0 +1,51 @@
+import random
+import string
+
+def generate_username(include_numbers=True, include_special_chars=True, length=8):
+    adjectives = ["Bold", "Lively", "Swift", "Noble", "Clever", "Witty", "Valiant", "Cheerful"]
+    nouns = ["Phoenix", "Griffin", "Cheetah", "Raven", "Sage", "Guardian", "Samurai", "Hawk"]
+    special_chars = "!@#$%^&*"
+    
+    # Pick random adjective and noun
+    adjective = random.choice(adjectives)
+    noun = random.choice(nouns)
+    
+    # Generate random number
+    number = str(random.randint(10, 99)) if include_numbers else ""
+    
+    # Generate random special character
+    special_char = random.choice(special_chars) if include_special_chars else ""
+    
+    # Construct the username
+    username = f"{adjective}{noun}{number}{special_char}"
+    
+    # Trim or extend to match length requirement
+    username = username[:length] if len(username) > length else username
+    
+    return username
+
+def save_to_file(username, filename="usernames.txt"):
+    with open(filename, "a") as file:
+        file.write(username + "\n")
+
+def main():
+    print("Welcome to the Random Username Generator!")
+    num_usernames = int(input("How many usernames would you like to generate? "))
+    include_numbers = input("Include numbers? (y/n): ").strip().lower() == "y"
+    include_special_chars = input("Include special characters? (y/n): ").strip().lower() == "y"
+    length = int(input("Enter desired username length (min 6, max 15): "))
+    
+    if length < 6 or length > 15:
+        print("Invalid length. Using default length of 8.")
+        length = 8
+    
+    print("\nGenerated Usernames:")
+    for _ in range(num_usernames):
+        username = generate_username(include_numbers, include_special_chars, length)
+        print(username)
+        save_to_file(username)
+    
+    print("\nUsernames have been saved to usernames.txt")
+
+if __name__ == "__main__":
+    main()
